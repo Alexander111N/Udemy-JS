@@ -13,6 +13,8 @@
 // console.log(`Проверка интерполяции/ ${check}`);
 
 // console.log(typeof(answer)); 
+let abcd;
+console.log(abcd);
 
 let numberOfFilms = prompt('Сколько фильмов вы уже посмотрели?');
 console.log(numberOfFilms);
@@ -24,21 +26,42 @@ let personalMovieDB = {
     genres: [],
     privat: false
 };
-console.log(personalMovieDB.count);
-console.log(personalMovieDB.actors);
-console.log(personalMovieDB.genres);
-console.log(personalMovieDB.privat);
 
+// let lastFilm1 = prompt('Один из последних просмотренных фильмов?');
+// let lastFilmScore1 = prompt('На сколько оцениваете его?', 'От 1 до 10-ти');
+// let lastFilm2 = prompt('Один из последних просмотренных фильмов?');
+// let lastFilmScore2 = prompt('На сколько оцениваете его?', 'От 1 до 10-ти');
 
-let lastFilm1 = prompt('Один из последних просмотренных фильмов?');
-let lastFilmScore1 = prompt('На сколько оцениваете его?', 'От 1 до 10-ти');
+let count = 0;
 
-let lastFilm2 = prompt('Один из последних просмотренных фильмов?');
-let lastFilmScore2 = prompt('На сколько оцениваете его?', 'От 1 до 10-ти');
+while(count < 2) {
+    let lastFilm = prompt('Один из последних просмотренных фильмов?');
 
+    if(lastFilm == '' || lastFilm == null || lastFilm.length > 50 ){
+        continue;
+    }  
 
+    let lastFilmScore = prompt('На сколько оцениваете его?', 'От 1 до 10-ти');
 
-personalMovieDB.movies[lastFilm1] = lastFilmScore1;
-personalMovieDB.movies[lastFilm2] = lastFilmScore2;
+    if(lastFilmScore == '' || lastFilmScore == null || lastFilmScore.length > 50 ){
+        continue;
+    }  
+
+    personalMovieDB.movies[lastFilm] = lastFilmScore;
+    count++;
+}
+
+if(personalMovieDB.count < 10){
+    alert('Просмотрено довольно мало фильмов');
+} else if(personalMovieDB.count >= 10 && personalMovieDB.count <=30){
+    alert('Вы классический зритель');
+} else if(personalMovieDB.count > 30){
+    alert('Вы киноман');
+} else {
+    alert('Произошла ошибка');
+}
+// personalMovieDB.movies[lastFilm1] = lastFilmScore1;
+// personalMovieDB.movies[lastFilm2] = lastFilmScore2;
 
 console.log(personalMovieDB);
+
