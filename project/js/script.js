@@ -39,13 +39,62 @@ const genre = document.getElementsByClassName('promo__genre');
  backView.style.backgroundImage = 'url(\'img/bg.jpg\')';
 
  //4,5
-movieDB.movies.sort();
-const movieList = document.querySelector('.promo__interactive-list');    
-movieList.innerHTML = '';
-movieDB.movies.forEach((item, i) => {
-    movieList.innerHTML +=`
-    <li class="promo__interactive-item">${i+1} ${item}
-    <div class="delete"></div>
-    </li>
-    `;   
+ function createListOfMovies (){
+    movieDB.movies.sort();
+    const movieList = document.querySelector('.promo__interactive-list');       
+    movieList.innerHTML = '';
+    movieDB.movies.forEach((item, i) => {
+        movieList.innerHTML +=`
+        <li class="promo__interactive-item">${i+1} ${item}
+        <div class="delete"></div>
+        </li>
+        `;   
+    });
+    addEvListForDeleteElements();  // навешиваем обработчики события на все кнопки delete
+ }
+createListOfMovies(); // вызываем метод при первоначальной загрузке страницы
+
+const btnAddFilm = document.querySelector('button');  // получаем кнопку
+const favoriteFilm = document.querySelector('[type = checkbox]'); // получаем галочку
+let formTextField = document.querySelector('.adding__input');
+
+btnAddFilm.addEventListener('click', (event) => {                               // обработчик события на кнопку Добавить
+    event.preventDefault(); // убираем перезагрузку страницы
+    let nameOfFilm = formTextField.value.toUpperCase();
+    if(nameOfFilm){ // проверяем чтобы фильм не был пустой строкой
+        if(nameOfFilm.length > 21){
+            nameOfFilm = nameOfFilm.slice(0,21) + '...';
+        }
+        movieDB.movies.push(nameOfFilm);
+        if(favoriteFilm.checked){
+            alert('Добавляем любимый фильм');
+            console.log('Добавляем любимый фильм');
+        }
+        createListOfMovies(); // вызываем список с обновлнным списком
+    }
+    formTextField.value = '';
 });
+
+function addEvListForDeleteElements (){                         // обработчик события на кнопки Удалить
+    const btnDeleteFilm = document.querySelectorAll('.promo__interactive-list .delete');
+    btnDeleteFilm.forEach(item => {
+        item.addEventListener('click', (event) => {
+            var name = event.target.parentElement.innerText.slice(2, event.target.parentElement.innerText.length);
+            deleteFilmFromDB(name);
+            createListOfMovies();
+        });
+    });
+}
+
+function deleteFilmFromDB (name){    // Удаляем фильм из БД
+    movieDB.movies.forEach((item,i) => {
+        if(item.toUpperCase() == name.toUpperCase()){
+            movieDB.movies.splice(i, 1);
+        }
+    });
+}
+
+
+
+
+
